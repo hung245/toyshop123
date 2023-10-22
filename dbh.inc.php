@@ -1,8 +1,8 @@
 <?php
 
-$dsn = "mysql:host=rwo5jst0d7dgy0ri.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;port=3306;dbname=njv1izd5eu5qyc3x";
-$username = "a8umgzzuseamn7r2";
-$password = "i0p5v9dpkkdxpync"; 
+$dsn = "mysql:host=rwo5jst0d7dgy0ri.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;port=3306;dbname=oy94weq8rrkmm3im";
+$username = "av4keuay3bl923e7";
+$password = "shseyj3sc3osbw9z";
 
 
 try {
