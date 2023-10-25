@@ -7,9 +7,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $phone = $_POST["phone"];
   $shopID = $_POST["shopID"];
 
-  $dsn = "mysql:host=rwo5jst0d7dgy0ri.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;port=3306;dbname=oy94weq8rrkmm3im";
-  $username = "av4keuay3bl923e7";
-  $password = "shseyj3sc3osbw9z";
+  $dsn = "mysql:host=td5l74lo6615qq42.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;port=3306;dbname=pqexjxo57ht2w73i";
+  $username = "x859u67buqo6v1iq";
+  $password = "d7vyekdqwidzd3bv";
   
 
   try {
