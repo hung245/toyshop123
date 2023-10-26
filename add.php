@@ -18,8 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $img)) {
       $dsn = "mysql:host=s465z7sj4pwhp7fn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;port=3306;dbname=d4h3mjkjk80n2yrp";
-  $username = "cxyr1qdeadhw1stb";
-  $password = "cxyr1qdeadhw1stb";
+      $username = "cxyr1qdeadhw1stb";
+      $password = "bd5sul6vxf3c5fo2";
       try {
           $conn = new PDO($dsn, $username, $password);
           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
