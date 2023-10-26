@@ -3,7 +3,6 @@ $dsn = "mysql:host=s465z7sj4pwhp7fn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;por
 $username = "cxyr1qdeadhw1stb";
 $password = "bd5sul6vxf3c5fo2";
 
-
 $imageDir = "images/"; 
 
 try {
@@ -15,12 +14,7 @@ try {
 
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
     $searchKeyword = $_GET["search"];
-
-    $sql = "SELECT ToyID, Toy_Name, description, Original_price, Selling_price, Quantity, Product_import_date, Product_import_staff, Shop_ID, Supplier_ID, image
-            FROM toy
-            WHERE Toy_Name LIKE :searchKeyword
-            OR description LIKE :searchKeyword";
-
+    $sql = "SELECT ToyID, Toy_Name, description, Original_price, Selling_price, Quantity, Product_import_date, Product_import_staff, Shop_ID, Supplier_ID, image FROM toy WHERE Toy_Name LIKE :searchKeyword OR description LIKE :searchKeyword";
     $stmt = $conn->prepare($sql);
     $stmt->bindValue(":searchKeyword", "%$searchKeyword%", PDO::PARAM_STR);
     $stmt->execute();
@@ -31,7 +25,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
     $toys = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,16 +38,14 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
       padding: 0;
       background-color: #f4f4f4;
     }
-
     header {
-      background-color: #333;
+      background-color: #007BFF;
       color: #fff;
       text-align: center;
       padding: 20px 0;
     }
-
     .container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
       background-color: #fff;
@@ -62,49 +53,42 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
       border-radius: 5px;
       position: relative;
     }
-
     h1 {
-      font-size: 36px;
+      font-size: 2.5em;
       margin: 0;
     }
-
     h2 {
       font-size: 24px;
       margin: 20px 0;
     }
-
     .product {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       border: 1px solid #ddd;
       margin: 10px 0;
       padding: 10px;
       border-radius: 5px;
     }
-
     .product-details {
-      font-size: 16px;
+      max-width: 70%;
     }
-
     .product-name {
       font-size: 24px;
       font-weight: bold;
     }
-
     .product-description {
       margin-top: 10px;
     }
-
     .product-price {
       margin: 5px 0;
     }
-
     .login-buttons {
-      position: absolute;
-      top: 20px;
-      right: 20px;
+      text-align: center;
+      margin-top: 20px;
     }
-
     .login-button {
-      background-color: #333;
+      background-color: #007BFF;
       color: #fff;
       padding: 10px 20px;
       border: none;
@@ -112,24 +96,28 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
       text-decoration: none;
       margin-left: 10px;
     }
-
     .search-form {
       text-align: center;
       margin-top: 20px;
     }
-
-    .search-input {
-      width: 300px;
+    .search-input, button {
       padding: 10px;
       font-size: 16px;
+      border-radius: 5px;
       border: 1px solid #ccc;
-      border-radius: 3px;
+    }
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
     }
     .product-image {
-  max-width: 300px; 
-  height: auto; 
-}
-
+      max-width: 200px; 
+      height: auto; 
+    }
   </style>
 </head>
 <body>
@@ -138,32 +126,28 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
   </header>
   <div class="container">
     <h2>Product List</h2>
-   
-    <form class="search-form" method="GET" action="index.php">
-      <input class="search-input" type="text" name="search" placeholder="Search products">
+    <form class="search-form" method="GET" action="shop.php">
+      <input class="search-input" type="text" name="search" placeholder="Search toys...">
       <button type="submit">Search</button>
     </form>
-    
-    <?php if (!empty($toys)): ?>
-      <?php foreach ($toys as $toy): ?>
-        <div class="product">
-          <div class="product-details">
-          <img src="<?= $toy['image'] ?>" alt="<?= $toy['Toy_Name'] ?>" class="product-image">
-            <h3 class="product-name"><?= $toy['Toy_Name'] ?></h3>
-            <p class="product-description"><?= $toy['description'] ?></p>
-            <p class="product-price">Selling Price: $<?= $toy['Selling_price'] ?></p>
-            <p class="product-price">Quantity: <?= $toy['Quantity'] ?></p>
-            <p class="product-price">Shop ID: <?= $toy['Shop_ID'] ?></p>
-          </div>
-        </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <p>No products found.</p>
-    <?php endif; ?>
     <div class="login-buttons">
-      <a href="staff-login.php" class="login-button">Login as Staff</a>
-      <a href="customer-login.php" class="login-button">Login as Customer</a>
+      <a class="login-button" href="login.html">Log In</a>
+      <a class="login-button" href="register.html">Register</a>
     </div>
+    <?php foreach ($toys as $toy): ?>
+      <div class="product">
+        <div class="product-details">
+          <h3 class="product-name"><?= htmlspecialchars($toy['Toy_Name']) ?></h3>
+          <p class="product-description"><?= htmlspecialchars($toy['description']) ?></p>
+          <p class="product-price">Original Price: <?= number_format($toy['Original_price'], 2) ?></p>
+          <p class="product-price">Selling Price: <?= number_format($toy['Selling_price'], 2) ?></p>
+          <p class="product-price">Quantity: <?= $toy['Quantity'] ?></p>
+        </div>
+        <div class="product-image">
+          <img src="<?= $imageDir . htmlspecialchars($toy['image']) ?>" alt="<?= htmlspecialchars($toy['Toy_Name']) ?>">
+        </div>
+      </div>
+    <?php endforeach; ?>
   </div>
 </body>
 </html>
