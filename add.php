@@ -17,10 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $img = $imgdir . str_replace(' ', '-', $_FILES['image']['name']); 
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $img)) {
-      $dsn = "mysql:host=td5l74lo6615qq42.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;port=3306;dbname=pqexjxo57ht2w73i";
-      $username = "x859u67buqo6v1iq";
-      $password = "d7vyekdqwidzd3bv";
-      
+      $dsn = "mysql:host=s465z7sj4pwhp7fn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;port=3306;dbname=d4h3mjkjk80n2yrp";
+  $username = "cxyr1qdeadhw1stb";
+  $password = "cxyr1qdeadhw1stb";
       try {
           $conn = new PDO($dsn, $username, $password);
           $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -67,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if ($stmt->execute()) {
                     $successMessage = "Product added successfully.";
-                    // Optionally, you can also clear the form input fields here.
+                    
                 } else {
                     $errorMessage = "An error occurred while adding product information.";
                 }
