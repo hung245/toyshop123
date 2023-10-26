@@ -3,9 +3,6 @@ $dsn = "mysql:host=s465z7sj4pwhp7fn.cbetxkdyhwsb.us-east-1.rds.amazonaws.com;por
 $username = "cxyr1qdeadhw1stb";
 $password = "bd5sul6vxf3c5fo2";
 
-
-$imageDir = "images/"; 
-
 try {
     $conn = new PDO($dsn, $username, $password);
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -15,18 +12,16 @@ try {
 
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
     $searchKeyword = $_GET["search"];
-
-    $sql = "SELECT ToyID, Toy_Name, description, Original_price, Selling_price, Quantity, Product_import_date, Product_import_staff, Shop_ID, Supplier_ID, image
+    $sql = "SELECT ToyID, Toy_Name, description, Original_price, Selling_price, Quantity, Product_import_date, Product_import_staff, Supplier_ID, image
             FROM toy
             WHERE Toy_Name LIKE :searchKeyword
             OR description LIKE :searchKeyword";
-
     $stmt = $conn->prepare($sql);
     $stmt->bindValue(":searchKeyword", "%$searchKeyword%", PDO::PARAM_STR);
     $stmt->execute();
     $toys = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    $sql = "SELECT ToyID, Toy_Name, description, Original_price, Selling_price, Quantity, Product_import_date, Product_import_staff, Shop_ID, Supplier_ID, image FROM toy";
+    $sql = "SELECT ToyID, Toy_Name, description, Original_price, Selling_price, Quantity, Product_import_date, Product_import_staff, Supplier_ID, image FROM toy";
     $stmt = $conn->query($sql);
     $toys = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -54,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
     }
 
     .container {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
       background-color: #fff;
@@ -75,9 +70,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
 
     .product {
       border: 1px solid #ddd;
-      margin: 10px 0;
+      margin: 10px;
       padding: 10px;
       border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .product-details {
@@ -125,18 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
       border: 1px solid #ccc;
       border-radius: 3px;
     }
-    .product-image {
-  max-width: 300px; 
-  height: auto; 
-}
-.product {
-      border: 1px solid #ddd;
-      margin: 10px;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-    
+
     .products-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -160,23 +145,25 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
       <input class="search-input" type="text" name="search" placeholder="Search products">
       <button type="submit">Search</button>
     </form>
-    
-    <?php if (!empty($toys)): ?>
-      <?php foreach ($toys as $toy): ?>
-        <div class="product">
-          <div class="product-details">
-          <img src="<?= $toy['image'] ?>" alt="<?= $toy['Toy_Name'] ?>" class="product-image">
-            <h3 class="product-name"><?= $toy['Toy_Name'] ?></h3>
-            <p class="product-description"><?= $toy['description'] ?></p>
-            <p class="product-price">Selling Price: $<?= $toy['Selling_price'] ?></p>
-            <p class="product-price">Quantity: <?= $toy['Quantity'] ?></p>
-            <p class="product-price">Shop ID: <?= $toy['Shop_ID'] ?></p>
+
+    <div class="products-grid">
+      <?php if (!empty($toys)): ?>
+        <?php foreach ($toys as $toy): ?>
+          <div class="product">
+            <div class="product-details">
+              <img src="<?= $imageDir . htmlspecialchars($toy['image']) ?>" alt="<?= htmlspecialchars($toy['Toy_Name']) ?>" class="product-image">
+              <h3 class="product-name"><?= htmlspecialchars($toy['Toy_Name']) ?></h3>
+              <p class="product-description"><?= htmlspecialchars($toy['description']) ?></p>
+              <p class="product-price">Selling Price: $<?= number_format($toy['Selling_price'], 2) ?></p>
+              <p class="product-price">Quantity: <?= $toy['Quantity'] ?></p>
+            </div>
           </div>
-        </div>
-      <?php endforeach; ?>
-    <?php else: ?>
-      <p>No products found.</p>
-    <?php endif; ?>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No products found.</p>
+      <?php endif; ?>
+    </div>
+    
     <div class="login-buttons">
       <a href="staff-login.php" class="login-button">Login as Staff</a>
       <a href="customer-login.php" class="login-button">Login as Customer</a>
