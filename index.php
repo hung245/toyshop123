@@ -129,7 +129,24 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
   max-width: 300px; 
   height: auto; 
 }
+.product {
+      border: 1px solid #ddd;
+      margin: 10px;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
 
+    .product-image {
+      max-width: 100%; 
+      height: auto; 
+    }
   </style>
 </head>
 <body>
@@ -138,29 +155,28 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["search"])) {
   </header>
   <div class="container">
     <h2>Product List</h2>
+   
     <form class="search-form" method="GET" action="index.php">
       <input class="search-input" type="text" name="search" placeholder="Search products">
       <button type="submit">Search</button>
     </form>
     
-    <div class="products-grid">
-      <?php if (!empty($toys)): ?>
-        <?php foreach ($toys as $toy): ?>
-          <div class="product">
-            <div class="product-details">
-              <img src="<?= $imageDir . htmlspecialchars($toy['image']) ?>" alt="<?= htmlspecialchars($toy['Toy_Name']) ?>" class="product-image">
-              <h3 class="product-name"><?= htmlspecialchars($toy['Toy_Name']) ?></h3>
-              <p class="product-description"><?= htmlspecialchars($toy['description']) ?></p>
-              <p class="product-price">Selling Price: $<?= number_format($toy['Selling_price'], 2) ?></p>
-              <p class="product-price">Quantity: <?= $toy['Quantity'] ?></p>
-            </div>
+    <?php if (!empty($toys)): ?>
+      <?php foreach ($toys as $toy): ?>
+        <div class="product">
+          <div class="product-details">
+          <img src="<?= $toy['image'] ?>" alt="<?= $toy['Toy_Name'] ?>" class="product-image">
+            <h3 class="product-name"><?= $toy['Toy_Name'] ?></h3>
+            <p class="product-description"><?= $toy['description'] ?></p>
+            <p class="product-price">Selling Price: $<?= $toy['Selling_price'] ?></p>
+            <p class="product-price">Quantity: <?= $toy['Quantity'] ?></p>
+            <p class="product-price">Shop ID: <?= $toy['Shop_ID'] ?></p>
           </div>
-        <?php endforeach; ?>
-      <?php else: ?>
-        <p>No products found.</p>
-      <?php endif; ?>
-    </div>
-    
+        </div>
+      <?php endforeach; ?>
+    <?php else: ?>
+      <p>No products found.</p>
+    <?php endif; ?>
     <div class="login-buttons">
       <a href="staff-login.php" class="login-button">Login as Staff</a>
       <a href="customer-login.php" class="login-button">Login as Customer</a>
